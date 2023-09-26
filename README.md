@@ -1,5 +1,9 @@
 # chatbot-server
 
+## Algorithm Improvement Ideas
+
+WebSocket v.s. WebRTC
+
 ## Architecture
 
 - iOS and Android will provide basic scaffolding and the UX will be a web view
