@@ -2,6 +2,7 @@
 import express from 'express'; 
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { CustomWebSocketServer } from './CustomWebSocketServer';
 
 // Initialize the express engine
 const app: express.Application = express();
@@ -20,7 +21,11 @@ app.get('/api', (_req, _res) => {
 });
  
 // Server setup
-app.listen(port, () => {
+const httpServer = app.listen(port, () => {
     console.log(`Server is listening at
          http://localhost:${port}/`);
 });
+
+// Import the WebSocketServerFactory
+
+const cwss = new CustomWebSocketServer({ server: httpServer });

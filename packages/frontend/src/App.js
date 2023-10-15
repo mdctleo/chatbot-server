@@ -14,6 +14,22 @@ function App() {
           console.log(error)
         }
       )
+      
+    const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET);
+
+    ws.onopen = () => {
+      console.log('WebSocket connection established');
+      ws.send('Hello, server!');
+    };
+
+    ws.onmessage = (event) => {
+      console.log(`Received message: ${event.data}`);
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+      
   }, [])
 
   return (
