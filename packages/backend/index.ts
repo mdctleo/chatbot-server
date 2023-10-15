@@ -26,6 +26,4 @@ const httpServer = app.listen(port, () => {
          http://localhost:${port}/`);
 });
 
-// Import the WebSocketServerFactory
-
 const cwss = new CustomWebSocketServer({ server: httpServer });
