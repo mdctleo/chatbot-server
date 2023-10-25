@@ -1,5 +1,6 @@
 import { ServerOptions, WebSocket, WebSocketServer } from "ws";
 import { CustomWebSocket } from "./CustomWebSocket";
+import { generateFakePlaceHolderMessages } from "./MessageFomatter";
 
 /**
  * Wrapper around the WebSocketServer from ws, handles lifcycle methods here to decrease complexity at index
@@ -31,13 +32,12 @@ export class CustomWebSocketServer extends WebSocketServer {
   
         customWebSocket.on('message', (message) => {
             console.log(`Received message => ${message}`);
+            customWebSocket.send(JSON.stringify(generateFakePlaceHolderMessages("This is a response from the LLM")));
         });
 
         customWebSocket.on('pong', () => { 
             customWebSocket.isAlive = true;
-        });
-  
-        customWebSocket.send('Hello client');
+        });  
     } 
 
     private checkConnectionStatus = (): void => {
