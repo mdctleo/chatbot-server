@@ -9,7 +9,7 @@ At the root of the project run
 To start run
 `npm start`
 
-You will need a `.env` file inside `packages/frontend/` with the following variables set to the backend host and port
+You will need a `.env` file inside `packages/frontend/` with the following variables set to the backend host and port, which by default should be http://localhost:8000
 ```
 REACT_APP_API_URL=
 REACT_APP_WEBSOCKET=
