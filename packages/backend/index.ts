@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { CustomWebSocketServer } from './CustomWebSocketServer';
+import path from 'path';
 
 // Initialize the express engine
 const app: express.Application = express();
@@ -14,6 +15,12 @@ if (process.env.NODE_ENV !== 'production') {
  
 // Take a port 8000 for running server.
 const port: number = Number(process.env.PORT) || 8000;
+
+app.use(express.static(path.join(__dirname, './public')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + './public/index.html'));
+});
  
 // Handling '/' Request
 app.get('/api', (_req, _res) => {
