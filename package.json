@@ -5,10 +5,11 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "lerna run --parallel start"
+    "start": "lerna run --parallel start",
+    "serve": "rm -rf packages/backend/public && cross-env BACKEND_URL=$BACKEND_URL lerna run --scope frontend build:custom && mv packages/frontend/build packages/backend/public && lerna run --scope backend start"
   },
-  "dependencies": {},
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "lerna": "^7.3.0"
   }
 }
