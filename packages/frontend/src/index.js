@@ -9,17 +9,23 @@ import messageThreadSlice from './MessageThread/MessageThreadSlice'
 import userInputSlice from './UserInput/UserInputSlice'
 import { initializeIcons, registerIcons } from '@fluentui/react'
 import { DEFAULT_COMPONENT_ICONS } from '@azure/communication-react'
+import { fluentButton, fluentSelect, fluentOption, provideFluentDesignSystem } from '@fluentui/web-components';
+
 
 
 export const store = configureStore({
   reducer: {
     messageThread: messageThreadSlice,
-    userInput: userInputSlice
+    userInput: userInputSlice  
   }
 })
 
 initializeIcons();
 registerIcons({ icons: DEFAULT_COMPONENT_ICONS });
+provideFluentDesignSystem().register(
+  fluentButton(),
+  fluentSelect(),
+  fluentOption());
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

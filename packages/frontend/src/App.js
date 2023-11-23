@@ -1,58 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
-import { useEffect } from 'react';
-import React from 'react';
-import { MessageThreadView } from './MessageThread/MessageThreadView';
-import { UserInputView } from './UserInput/UserInputView';
-
-
+import logo from "./logo.svg";
+import "./App.css";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ConversationView } from "./Conversation/ConversationView";
+import { ExperimentConfigView } from "./ExperimentConfig/ExperimentConfigView";
+import { FluentThemeProvider } from "@azure/communication-react";
+import { HeaderView } from "./Header/HeaderView";
 
 function App() {
-  useEffect(() => {
-    // fetch(process.env.REACT_APP_API_URL)
-    //   .then(res => res.json())
-    //   .then(
-    //     (result) => {
-    //      console.log(result)
-    //     },
-    //     (error) => {
-    //       console.log(error)
-    //     }
-    //   )
-      
-    // const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET);
-
-    // ws.onopen = () => {
-    //   console.log('WebSocket connection established');
-    //   ws.send('Hello, server!');
-    // };
-
-    // ws.onmessage = (event) => {
-    //   console.log(`Received message: ${event.data}`);
-    // };
-
-    // ws.onclose = () => {
-    //   console.log('WebSocket connection closed');
-    // };
-
-    const setVh = () => {
-      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-    };
-
-    window.addEventListener('resize', setVh);
-    setVh(); // Initial set
-
-    return () => {
-      window.removeEventListener('resize', setVh);
-    };
-      
-  }, [])
-
   return (
-    <div className="grid-container">
-      <MessageThreadView />
-      <UserInputView />
-    </div>
+    <FluentThemeProvider>
+      <Router>
+        <div className="grid-container">
+        <HeaderView />
+          <Routes>
+            <Route path="/" element={<ConversationView />} />
+            <Route path="/config" element={<ExperimentConfigView />} />
+          </Routes>
+        </div>
+      </Router>
+    </FluentThemeProvider>
   );
 }
 

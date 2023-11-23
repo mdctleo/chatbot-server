@@ -8,6 +8,7 @@ const messageThreadSlice = createSlice({
   initialState,
   reducers: {
     messageAdded(state, action) {
+      console.log("inside messageAdded")
       state.push(action.payload)
     },
   },
