@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Settings24Regular } from "@fluentui/react-icons";
+import { Settings24Regular, Chat24Regular } from "@fluentui/react-icons";
 import "./HeaderView.css";
 
 export function HeaderView() {
@@ -7,6 +7,9 @@ export function HeaderView() {
 
   return (
     <div className="header-bar">
+      <button onClick={() => navigate("/")}>
+        <Chat24Regular />
+      </button>
       <button onClick={() => navigate("/config")}>
         <Settings24Regular />
       </button>

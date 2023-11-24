@@ -1,3 +1,13 @@
-.message-thread-view {
-    overflow-y: auto;
-  }
+.experiment-config-view {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.experiment-config-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}

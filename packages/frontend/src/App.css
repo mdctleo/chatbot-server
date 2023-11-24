@@ -39,6 +39,7 @@
 
 .grid-container {
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: auto 1fr;
   height: calc(var(--vh, 1vh) * 100);
+  align-items: start;
 }

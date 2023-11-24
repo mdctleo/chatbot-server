@@ -9,7 +9,15 @@ const userInputSlice = createSlice({
   reducers: {
     // Give case reducers meaningful past-tense "event"-style names
     sendMessage(state, action) {
-      ws.send(JSON.stringify(action.payload))
+      const { message, improvement } = action.payload
+      console.log(message)
+      console.log(improvement)
+      
+      if (improvement === 'WEBSOCKET') {
+        ws.send(JSON.stringify(message))
+      } else if (improvement === 'HTTP') {
+        console.log("NOT YET IMPLMENETED")
+      }
     }
   }
 })
