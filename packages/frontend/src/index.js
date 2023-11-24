@@ -7,20 +7,20 @@ import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 import messageThreadSlice from './MessageThread/MessageThreadSlice'
 import userInputSlice from './UserInput/UserInputSlice'
+import experimentConfigSlice from './ExperimentConfig/ExperimentConfigSlice'
 import { initializeIcons, registerIcons } from '@fluentui/react'
 import { DEFAULT_COMPONENT_ICONS } from '@azure/communication-react'
-
 
 export const store = configureStore({
   reducer: {
     messageThread: messageThreadSlice,
-    userInput: userInputSlice
+    userInput: userInputSlice,
+    experimentConfig: experimentConfigSlice
   }
 })
 
 initializeIcons();
 registerIcons({ icons: DEFAULT_COMPONENT_ICONS });
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

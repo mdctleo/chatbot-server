@@ -2,6 +2,8 @@ import { SendBox, FluentThemeProvider } from '@azure/communication-react';
 import React from 'react';
 import { useDispatch } from 'react-redux'; 
 import { sendMessage } from './UserInputSlice'
+import { selectImprovement } from '../ExperimentConfig/ExperimentConfigSlice'
+import { store } from '../index'
 import './UserInputView.css';
 
 export function UserInputView() {
@@ -24,7 +26,8 @@ export function UserInputView() {
                             status: 'seen',
                             contentType: 'html'
                           }
-                        dispatch(sendMessage(formattedMessage))
+                        const improvement = selectImprovement(store.getState())
+                        dispatch(sendMessage({message: formattedMessage, improvement: improvement}))
                     }}
                     onTyping={async () => {
                         return;
