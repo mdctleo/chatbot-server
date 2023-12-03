@@ -15,8 +15,8 @@ const messageThreadSlice = createSlice({
 
   extraReducers: (builder) => {
     builder.addCase(sendMessage, (state, action) => {
-      const { message } = action.payload
-      state.push(message)
+      const { messagePayload } = action.payload
+      state.push(messagePayload.message)
   }) 
 }})
 

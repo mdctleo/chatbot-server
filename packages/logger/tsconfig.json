@@ -1,0 +1,11 @@
+// tsconfig.json
+{
+    "compilerOptions": {
+      "target": "es5",
+      "module": "commonjs",
+      "outDir": "./dist",
+      "strict": true
+    },
+    "include": ["./**/*.ts"],
+    "exclude": ["node_modules"]
+  }

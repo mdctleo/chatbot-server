@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { CustomWebSocketServer } from './CustomWebSocketServer';
 import path from 'path';
+import { generateFakePlaceHolderMessages } from './MessageFomatter';
 
 // Initialize the express engine
 const app: express.Application = express();
@@ -26,7 +27,12 @@ app.get('*', (req, res) => {
 app.get('/api', (_req, _res) => {
     _res.send({body: "Hello World"});
 });
- 
+
+app.post('/api/query', (req, res) => {
+    const timeStamp = new Date().getTime();
+    res.send({body: generateFakePlaceHolderMessages("This is a response from the LLM using HTTP")});
+});
+
 // Server setup
 const httpServer = app.listen(port, () => {
     console.log(`Server is listening at

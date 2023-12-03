@@ -1,0 +1,5 @@
+{
+    "name": "chatbot-logger",
+    "version": "1.0.0",
+    "main": "LoggingHandler.js"
+  }

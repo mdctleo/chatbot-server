@@ -1,5 +1,6 @@
 import { messageAdded } from "./MessageThread/MessageThreadSlice";
 import { store } from "./index";
+import { sendLog, SourcesEnum } from "chatbot-logger";
 
 const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET)
 
@@ -16,6 +17,12 @@ ws.onmessage = (event) => {
 ws.onclose = () => {
   console.log('WebSocket connection closed')
 };
+
+export const sendWebSocketMessage = (message) => {
+  const messageLeaveClientTimestamp = new Date().getTime()
+  ws.send(JSON.stringify(message))
+  sendLog(message, messageLeaveClientTimestamp, SourcesEnum.CLIENT_SENT_TO_SERVER)
+}
 
 
 export default ws
