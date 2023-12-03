@@ -1,6 +1,6 @@
 import { messageAdded } from "./MessageThread/MessageThreadSlice";
 import { store } from "./index";
-import { sendLog, SourcesEnum } from "chatbot-logger";
+import { sendLog, SourcesEnum } from "logger";
 
 const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET)
 

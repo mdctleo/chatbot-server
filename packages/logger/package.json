@@ -1,5 +1,8 @@
 {
-    "name": "chatbot-logger",
+    "name": "logger",
     "version": "1.0.0",
-    "main": "LoggingHandler.js"
-  }
+    "main": "dist/LoggingHandler.js",
+    "devDependencies": {
+        "typescript": "^5.3.2"
+    }
+}

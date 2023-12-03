@@ -15,8 +15,8 @@
     "react-scripts": "5.0.1",
     "react-redux": "^7.2.6",
     "web-vitals": "^2.1.4",
-    "chatbot-logger": "file:../logger"
-  },
+    "logger": "file:../logger"
+    },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

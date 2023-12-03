@@ -17,36 +17,46 @@
  * From communication-react.d.ts
  */
 interface MessageFormat {
-    messageId: string;
-    createdOn?: Date;
-    messageType: 'chat';
-    content?: string;
-    editedOn?: Date;
-    deletedOn?: Date;
-    senderId?: string;
-    senderDisplayName?: string;
-    failureReason?: string;
-    mine?: boolean;
-    clientMessageId?: string;
-    contentType: 'text' | 'html' | 'richtext/html' | 'unknown';
-    /**
-     * A metadata field for the message.
-     * {@link @azure/communication-chat#ChatMessage.metadata}
-     */
-    metadata?: Record<string, string>;
+    sessionId: string;
+    exchangeId: string;
+    improvement: string;
+    message: {
+        messageId: string;
+        createdOn?: Date;
+        messageType: 'chat';
+        content?: string;
+        editedOn?: Date;
+        deletedOn?: Date;
+        senderId?: string;
+        senderDisplayName?: string;
+        failureReason?: string;
+        mine?: boolean;
+        clientMessageId?: string;
+        contentType: 'text' | 'html' | 'richtext/html' | 'unknown';
+        /**
+        * A metadata field for the message.
+        * {@link @azure/communication-chat#ChatMessage.metadata}
+        */
+        metadata?: Record<string, string>;
+    }
 }
 
 
-export const generateFakePlaceHolderMessages = (response: string) : MessageFormat => {
+export const generateFakePlaceHolderMessages = (response: string, sessionId: string, exchangeId: string, improvement: string) : MessageFormat => {
     return {
-        messageId: Math.random().toString(),
-        // TODO: Fix this, have all dates in unix time until display
-        // createdOn: "2021-01-01",
-        messageType: 'chat',
-        content: response,
-        contentType: 'text',
-        senderId: 'LLM',
-        senderDisplayName: 'LLM',
-        mine: false,
+        sessionId: sessionId,
+        exchangeId: exchangeId,
+        improvement: improvement,
+        message: {
+            messageId: Math.random().toString(),
+            // TODO: Fix this, have all dates in unix time until display
+            // createdOn: "2021-01-01",
+            messageType: 'chat',
+            content: response,
+            contentType: 'text',
+            senderId: 'LLM',
+            senderDisplayName: 'LLM',
+            mine: false,
+        }
     }
 }

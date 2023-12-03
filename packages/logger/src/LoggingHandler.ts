@@ -3,15 +3,13 @@
 export enum SourcesEnum {
     CLIENT_SENT_TO_SERVER = 'CLIENT_SENT_TO_SERVER',
     CLIENT_RECEIVED_FROM_SERVER = 'CLIENT_RECEIVED_FROM_SERVER',
+    SERVER_RECEIVED_FROM_CLIENT = "SERVER_RECEIVED_FROM_CLIENT",
+    SERVER_SENT_TO_CLIENT = "SERVER_SENT_TO_CLIENT",
+    SERVER_SENT_TO_LLM = "SERVER_SENT_TO_LLM",
+    SERVER_RECEIVED_FROM_LLM = "SERVER_RECEIVED_FROM_LLM"
   }
   
-  export interface MessagePayload {
-    timeStamp: number;
-    source: SourcesEnum;
-    // Add other properties here
-  }
-  
-  export const sendLog = (messagePayload: MessagePayload, timeStamp: number, source: SourcesEnum) => {
+  export const sendLog = (messagePayload: any, timeStamp: number, source: SourcesEnum) => {
     console.log("Calling sendLog")
     messagePayload.timeStamp = timeStamp;
     messagePayload.source = source;
