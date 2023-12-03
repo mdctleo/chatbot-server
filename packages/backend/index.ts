@@ -34,16 +34,14 @@ app.get('/api', (_req, _res) => {
 
 app.post('/api/query', (req, res) => {
     let timeStamp = new Date().getTime();
-    console.log(req.body);
     const requestBody = req.body;
     sendLog(requestBody, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_CLIENT);
 
-    const responseBody = {
-        body: generateFakePlaceHolderMessages("This is a response from the LLM using HTTP", requestBody.sessionId, requestBody.exchangeId, requestBody.improvement)
-    };
+    const responseBody = generateFakePlaceHolderMessages("This is a response from the LLM using HTTP", requestBody.sessionId, requestBody.exchangeId, requestBody.improvement)
     res.send({body: responseBody});
+    
     timeStamp = new Date().getTime();
-    sendLog(responseBody.body, timeStamp, SourcesEnum.SERVER_SENT_TO_CLIENT);
+    sendLog(responseBody, timeStamp, SourcesEnum.SERVER_SENT_TO_CLIENT);
 });
 
 // Server setup
