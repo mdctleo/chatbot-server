@@ -15,6 +15,12 @@ REACT_APP_API_URL=
 REACT_APP_WEBSOCKET=
 ```
 
+You will also need a `.env` file inside `packages/backend/` with the following variables set:
+
+```
+export OPENAI_API_KEY=
+```
+
 ## Algorithm Improvement Ideas
 
 WebSocket v.s. WebRTC
