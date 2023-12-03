@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import ws from '../WebSocketHandler'
+import { sendWebSocketMessage } from '../WebSocketHandler'
+import { sendHTTPMessage } from '../HTTPHandler'
 
 const initialState = {}
 
@@ -9,14 +10,18 @@ const userInputSlice = createSlice({
   reducers: {
     // Give case reducers meaningful past-tense "event"-style names
     sendMessage(state, action) {
-      const { message, improvement } = action.payload
-      console.log(message)
+      const { messagePayload, improvement, sessionId } = action.payload
+      console.log(messagePayload)
       console.log(improvement)
+
+      messagePayload.sessionId = sessionId
+      messagePayload.exchangeId = Math.random().toString()
+      messagePayload.improvement = improvement
       
       if (improvement === 'WEBSOCKET') {
-        ws.send(JSON.stringify(message))
+        sendWebSocketMessage(messagePayload)
       } else if (improvement === 'HTTP') {
-        console.log("NOT YET IMPLMENETED")
+        sendHTTPMessage(messagePayload)
       }
     }
   }

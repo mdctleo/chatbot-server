@@ -1,6 +1,7 @@
 import { ServerOptions, WebSocket, WebSocketServer } from "ws";
 import { CustomWebSocket } from "./CustomWebSocket";
 import { generateFakePlaceHolderMessages } from "./MessageFomatter";
+import { SourcesEnum, sendLog } from "logger";
 
 /**
  * Wrapper around the WebSocketServer from ws, handles lifcycle methods here to decrease complexity at index
@@ -30,9 +31,18 @@ export class CustomWebSocketServer extends WebSocketServer {
 
         customWebSocket.on('error', console.error);
   
-        customWebSocket.on('message', (message) => {
-            console.log(`Received message => ${message}`);
-            customWebSocket.send(JSON.stringify(generateFakePlaceHolderMessages("This is a response from the LLM")));
+        customWebSocket.on('message', (req) => {
+            let timeStamp = new Date().getTime();
+
+            const body = JSON.parse(req.toString());
+
+            sendLog(body, timeStamp, SourcesEnum.CLIENT_SENT_TO_SERVER);
+            
+
+            customWebSocket.send(JSON.stringify(generateFakePlaceHolderMessages("This is a response from the LLM", body.sessionId, body.exchangeId, body.improvement)));
+
+            timeStamp = new Date().getTime();
+            sendLog(body, timeStamp, SourcesEnum.SERVER_SENT_TO_CLIENT);
         });
 
         customWebSocket.on('pong', () => { 

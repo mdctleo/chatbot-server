@@ -12,9 +12,14 @@ export const TestSuitesEnum = {
   RUN_50_QUERIES: 'Run 50 queries'
 }
 
+export const generateSessionId = () => {
+  return Math.random().toString()
+}
+
 const initialState = {
-  improvement: 'WEBSOCKET',
-  testSuite: 'NO_AUTO_QUERIES'
+  improvement: 'HTTP',
+  testSuite: 'NO_AUTO_QUERIES',
+  sessionId: generateSessionId()
 }
 
 const experimentConfigSlice = createSlice({
@@ -23,6 +28,7 @@ const experimentConfigSlice = createSlice({
   reducers: {
     setImprovement(state, action) {
       state.improvement = action.payload
+      state.sessionId = generateSessionId()
     },
     
     setTestSuite(state, action) {
@@ -37,6 +43,7 @@ export const { setImprovement, setTestSuite } = experimentConfigSlice.actions
 
 export const selectImprovement = state => state.experimentConfig.improvement
 export const selectTestSuite = state => state.experimentConfig.testSuite
+export const selectSessionId = state => state.experimentConfig.sessionId
 
 // Export the slice reducer as the default export
 export default experimentConfigSlice.reducer
