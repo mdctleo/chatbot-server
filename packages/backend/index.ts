@@ -7,19 +7,19 @@ import path from 'path';
 import { generateFakePlaceHolderMessages } from './MessageFomatter';
 import { sendLog, SourcesEnum } from 'logger';
 import bodyParser from 'body-parser';
-//  import { OpenAI } from "langchain/llms/openai";
-// import { ChatOpenAI } from "langchain/chat_models/openai";
+import { OpenAI } from "langchain/llms/openai";
+import { ChatOpenAI } from "langchain/chat_models/openai";
 
 // Initialize the express engine
 const app: express.Application = express();
 dotenv.config();
 
 app.use(bodyParser.json());
-// const llm = new OpenAI({
-//     temperature: 0.9,
-// });
+const llm = new OpenAI({
+    temperature: 0.9,
+});
 
-// const chatModel = new ChatOpenAI();
+const chatModel = new ChatOpenAI();
 
 if (process.env.NODE_ENV !== 'production') {
     app.use(cors());
