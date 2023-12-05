@@ -42,7 +42,7 @@ interface MessageFormat {
 }
 
 
-export const generateFakePlaceHolderMessages = (response: string, sessionId: string, exchangeId: string, improvement: string) : MessageFormat => {
+export const generateMessageFormat = (response: string, sessionId: string, exchangeId: string, improvement: string) : MessageFormat => {
     return {
         sessionId: sessionId,
         exchangeId: exchangeId,

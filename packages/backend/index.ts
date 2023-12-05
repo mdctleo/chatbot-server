@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { CustomWebSocketServer } from './CustomWebSocketServer';
 import path from 'path';
-import { generateFakePlaceHolderMessages } from './MessageFomatter';
+import { generateMessageFormat } from './MessageFomatter';
 import { sendLog, SourcesEnum } from 'logger';
 import bodyParser from 'body-parser';
 import { getLLMResponse } from './LMService';
@@ -38,13 +38,23 @@ app.post('/api/query', async (req, res) => {
     const requestBody = req.body;
     sendLog(requestBody, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_CLIENT);
 
-    const llmResp = await getLLMResponse(requestBody.message.content);
-    const responseBody = generateFakePlaceHolderMessages(llmResp, requestBody.sessionId, requestBody.exchangeId, requestBody.improvement);
+    let llmResp = "This is a test response from the WebSocket protocol"
 
-    res.send({body: responseBody});
+    timeStamp = new Date().getTime();
+    sendLog(requestBody, timeStamp, SourcesEnum.SERVER_SENT_TO_LLM);
+
+    if (requestBody.useLLM === true) {
+        llmResp = await getLLMResponse(requestBody.message.content);
+    }
     
     timeStamp = new Date().getTime();
+    sendLog(requestBody, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_LLM);
+
+    const responseBody = generateMessageFormat(llmResp, requestBody.sessionId, requestBody.exchangeId, requestBody.improvement);
+
+    timeStamp = new Date().getTime();
     sendLog(responseBody, timeStamp, SourcesEnum.SERVER_SENT_TO_CLIENT);
+    res.send({body: responseBody});
 });
 
 // Server setup
@@ -54,24 +64,3 @@ const httpServer = app.listen(port, () => {
 });
 
 const cwss = new CustomWebSocketServer({ server: httpServer });
-
-// cwss.on('connection', (ws) => {
-//     console.log('a new client connected!')
-
-//     ws.on('message', async (message) => {
-//         // parse json message        
-//         const req = JSON.parse(message.toString());
-
-//         // handle client requests
-//         if (req.type == 'stream') {
-//             // call gpt api
-//             const text = req.query;
-//             const llmResult = await llm.predict(text);
-            
-//             console.log(llmResult);
-
-//             // send response
-//             // ws.send(JSON.stringify(llmResult));
-//         }
-//     });
-// });

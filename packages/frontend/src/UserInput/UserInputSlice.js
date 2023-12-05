@@ -10,13 +10,17 @@ const userInputSlice = createSlice({
   reducers: {
     // Give case reducers meaningful past-tense "event"-style names
     sendMessage(state, action) {
-      const { messagePayload, improvement, sessionId } = action.payload
+      const { messagePayload, improvement, sessionId, useLLM } = action.payload
       console.log(messagePayload)
       console.log(improvement)
 
+      /**
+       * Our metadata
+       */
       messagePayload.sessionId = sessionId
       messagePayload.exchangeId = Math.random().toString()
       messagePayload.improvement = improvement
+      messagePayload.useLLM = useLLM
       
       if (improvement === 'WEBSOCKET') {
         sendWebSocketMessage(messagePayload)

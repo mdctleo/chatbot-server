@@ -2,7 +2,7 @@ import { SendBox, FluentThemeProvider } from '@azure/communication-react';
 import React from 'react';
 import { useDispatch } from 'react-redux'; 
 import { sendMessage } from './UserInputSlice'
-import { selectImprovement, selectSessionId } from '../ExperimentConfig/ExperimentConfigSlice'
+import { selectImprovement, selectSessionId, selectUseLLM } from '../ExperimentConfig/ExperimentConfigSlice'
 import { store } from '../index'
 import './UserInputView.css';
 
@@ -32,7 +32,8 @@ export function UserInputView() {
                           }
                         const improvement = selectImprovement(store.getState())
                         const sessionId = selectSessionId(store.getState())
-                        dispatch(sendMessage({messagePayload: messagePayload, improvement: improvement, sessionId: sessionId}))
+                        const useLLM = selectUseLLM(store.getState())
+                        dispatch(sendMessage({messagePayload: messagePayload, improvement: improvement, sessionId: sessionId, useLLM: useLLM}))
                     }}
                     onTyping={async () => {
                         return;
