@@ -2,6 +2,9 @@
     "name": "logger",
     "version": "1.0.0",
     "main": "dist/LoggingHandler.js",
+    "scripts": {
+        "build": "tsc"
+    },
     "devDependencies": {
         "typescript": "^5.3.2"
     }

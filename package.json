@@ -5,8 +5,8 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "npm run build:logger && lerna run --parallel start",
-    "serve": "npm run build:logger && rm -rf packages/backend/public && cross-env BACKEND_URL=$BACKEND_URL lerna run --scope frontend build:custom && mv packages/frontend/build packages/backend/public && lerna run --scope backend start",
+    "start": "lerna run build --scope logger && lerna run --parallel start",
+    "serve": "lerna run build --scope logger && rm -rf packages/backend/public && cross-env BACKEND_URL=$BACKEND_URL lerna run --scope frontend build:custom && mv packages/frontend/build packages/backend/public && lerna run --scope backend start",
     "build:logger": "tsc -p packages/logger/tsconfig.json"
   },
   "devDependencies": {
