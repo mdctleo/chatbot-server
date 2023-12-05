@@ -7,19 +7,13 @@ import path from 'path';
 import { generateFakePlaceHolderMessages } from './MessageFomatter';
 import { sendLog, SourcesEnum } from 'logger';
 import bodyParser from 'body-parser';
-import { OpenAI } from "langchain/llms/openai";
-import { ChatOpenAI } from "langchain/chat_models/openai";
+import { getLLMResponse } from './LMService';
 
 // Initialize the express engine
 const app: express.Application = express();
 dotenv.config();
 
 app.use(bodyParser.json());
-const llm = new OpenAI({
-    temperature: 0.9,
-});
-
-const chatModel = new ChatOpenAI();
 
 if (process.env.NODE_ENV !== 'production') {
     app.use(cors());
@@ -39,12 +33,15 @@ app.get('/api', (_req, _res) => {
     _res.send({body: "Hello World"});
 });
 
-app.post('/api/query', (req, res) => {
+app.post('/api/query', async (req, res) => {
     let timeStamp = new Date().getTime();
     const requestBody = req.body;
     sendLog(requestBody, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_CLIENT);
 
-    const responseBody = generateFakePlaceHolderMessages("This is a response from the LLM using HTTP", requestBody.sessionId, requestBody.exchangeId, requestBody.improvement)
+    console.log(requestBody.message.content);
+
+    const responseBody = await getLLMResponse(requestBody.message.content);
+    console.log(responseBody);
     res.send({body: responseBody});
     
     timeStamp = new Date().getTime();
