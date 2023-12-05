@@ -40,8 +40,9 @@ app.post('/api/query', async (req, res) => {
 
     console.log(requestBody.message.content);
 
-    const responseBody = await getLLMResponse(requestBody.message.content);
-    console.log(responseBody);
+    const llmResp = await getLLMResponse(requestBody.message.content);
+    const responseBody = generateFakePlaceHolderMessages(llmResp, requestBody.sessionId, requestBody.exchangeId, requestBody.improvement);
+
     res.send({body: responseBody});
     
     timeStamp = new Date().getTime();
