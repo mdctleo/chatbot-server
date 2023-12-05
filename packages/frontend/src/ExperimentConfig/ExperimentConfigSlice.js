@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { sendMessage } from '../UserInput/UserInputSlice'
 
 export const ImprovementsEnum = {
   HTTP: 'HTTP',
@@ -19,7 +18,8 @@ export const generateSessionId = () => {
 const initialState = {
   improvement: 'HTTP',
   testSuite: 'NO_AUTO_QUERIES',
-  sessionId: generateSessionId()
+  sessionId: generateSessionId(),
+  useLLM: true
 }
 
 const experimentConfigSlice = createSlice({
@@ -32,18 +32,23 @@ const experimentConfigSlice = createSlice({
     },
     
     setTestSuite(state, action) {
-      state.testSuite = state.testSuite
+      state.testSuite = action.payload
+    },
+
+    setUseLLM(state, action) {
+      state.useLLM = action.payload === "true"
     }
   },
 })
 
 // `createSlice` automatically generated action creators with these names.
 // export them as named exports from this "slice" file
-export const { setImprovement, setTestSuite } = experimentConfigSlice.actions
+export const { setImprovement, setTestSuite, setUseLLM } = experimentConfigSlice.actions
 
 export const selectImprovement = state => state.experimentConfig.improvement
 export const selectTestSuite = state => state.experimentConfig.testSuite
 export const selectSessionId = state => state.experimentConfig.sessionId
+export const selectUseLLM = state => state.experimentConfig.useLLM
 
 // Export the slice reducer as the default export
 export default experimentConfigSlice.reducer
