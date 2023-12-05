@@ -38,7 +38,7 @@ app.post('/api/query', async (req, res) => {
     const requestBody = req.body;
     sendLog(requestBody, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_CLIENT);
 
-    let llmResp = "This is a test response from the WebSocket protocol"
+    let llmResp = "This is a test response from the HTTP protocol"
 
     timeStamp = new Date().getTime();
     sendLog(requestBody, timeStamp, SourcesEnum.SERVER_SENT_TO_LLM);

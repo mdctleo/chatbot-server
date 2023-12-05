@@ -31,7 +31,7 @@ export function ExperimentConfigView() {
       </>
       <>
         <label>Test Suites</label>
-        <Select defaultValue={currTestSuite} onChange={() => console.log("onChange")}>
+        <Select defaultValue={currTestSuite} onChange={(e) => dispatch(setTestSuite(e.target.value))}>
         {Object.entries(TestSuitesEnum).map(([key, value]) => (
               <option key={key} value={key}>{value}</option>
             ))}

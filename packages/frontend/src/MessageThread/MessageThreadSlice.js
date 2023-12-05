@@ -12,13 +12,7 @@ const messageThreadSlice = createSlice({
       state.push(message)
     },
   },
-
-  extraReducers: (builder) => {
-    builder.addCase(sendMessage, (state, action) => {
-      const { messagePayload } = action.payload
-      state.push(messagePayload.message)
-  }) 
-}})
+})
 
 // `createSlice` automatically generated action creators with these names.
 // export them as named exports from this "slice" file

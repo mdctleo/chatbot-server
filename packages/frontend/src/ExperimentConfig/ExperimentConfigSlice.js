@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { sendMessage } from '../UserInput/UserInputSlice'
 
 export const ImprovementsEnum = {
   HTTP: 'HTTP',
@@ -33,7 +32,7 @@ const experimentConfigSlice = createSlice({
     },
     
     setTestSuite(state, action) {
-      state.testSuite = state.testSuite
+      state.testSuite = action.payload
     },
 
     setUseLLM(state, action) {
