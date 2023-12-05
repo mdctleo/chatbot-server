@@ -38,8 +38,6 @@ app.post('/api/query', async (req, res) => {
     const requestBody = req.body;
     sendLog(requestBody, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_CLIENT);
 
-    console.log(requestBody.message.content);
-
     const llmResp = await getLLMResponse(requestBody.message.content);
     const responseBody = generateFakePlaceHolderMessages(llmResp, requestBody.sessionId, requestBody.exchangeId, requestBody.improvement);
 
