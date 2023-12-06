@@ -1,5 +1,5 @@
 import { SendBox, FluentThemeProvider } from "@azure/communication-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectIsRecording, sendMessage, setIsRecording } from "./UserInputSlice";
@@ -12,19 +12,23 @@ import {
 import { store } from "../index";
 import "./UserInputView.css";
 import { Mic24Regular, Stop24Regular } from "@fluentui/react-icons";
+import { startSpeechRecognition, stopSpeechRecognition } from "../SpeechHandler";
 
 export function UserInputView() {
   const dispatch = useDispatch();
   const isRecording = useSelector(selectIsRecording)
 
   const handleMicButton = () => {
-    dispatch(setIsRecording(!isRecording));
     // const isRecording = useSelector(selectIsRecording);
     if (isRecording) {
-        console.log("start recording")
-    } else {
         console.log("stop recording")
+        stopSpeechRecognition();
+    } else {
+        console.log("start recording")
+        startSpeechRecognition();
     }
+
+    dispatch(setIsRecording(!isRecording));
 }
 
   return (
@@ -42,7 +46,7 @@ export function UserInputView() {
         </div>
         <button
           className="microphone-icon"
-          onClick={() => handleMicButton()}
+          onClick={handleMicButton}
         >
           {isRecording? <Stop24Regular /> : <Mic24Regular />}
         </button>

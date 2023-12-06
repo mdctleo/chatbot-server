@@ -1,9 +1,21 @@
 import * as sdk from 'microsoft-cognitiveservices-speech-sdk';
+import { sendMessage } from "./UserInput/UserInputSlice";
+import { store } from "./index";
+import {
+  selectImprovement,
+  selectSessionId,
+  selectUseLLM,
+  selectTestSuite,
+} from "./ExperimentConfig/ExperimentConfigSlice";
 
-const startSpeechRecognition = async () => {
-    const speechConfig = sdk.SpeechConfig.fromSubscription('YourSubscriptionKey', 'YourServiceRegion');
+let recognizer;
+let speechTextHolder = '';
+
+export const startSpeechRecognition = async () => {
+    speechTextHolder = '';
+    const speechConfig = sdk.SpeechConfig.fromSubscription(process.env.REACT_APP_SPEECH_SERVICE_KEY, 'centralus');
     const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
-    const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+    recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
   
     recognizer.recognizing = (s, e) => {
       console.log(`RECOGNIZING: Text=${e.result.text}`);
@@ -12,6 +24,7 @@ const startSpeechRecognition = async () => {
     recognizer.recognized = (s, e) => {
       if (e.result.reason === sdk.ResultReason.RecognizedSpeech) {
         console.log(`RECOGNIZED: Text=${e.result.text}`);
+        speechTextHolder += e.result.text;
         // handleSend(e.result.text, dispatch);
       }
       else if (e.result.reason === sdk.ResultReason.NoMatch) {
@@ -38,3 +51,24 @@ const startSpeechRecognition = async () => {
   
     recognizer.startContinuousRecognitionAsync();
   };
+
+  export const stopSpeechRecognition = () => {
+    if (recognizer) {
+        recognizer.stopContinuousRecognitionAsync();
+        if (speechTextHolder.length > 0) {
+            const improvement = selectImprovement(store.getState());
+            const sessionId = selectSessionId(store.getState());
+            const useLLM = selectUseLLM(store.getState());
+            const testSuite = selectTestSuite(store.getState());
+
+            store.dispatch(sendMessage({
+              userInput: speechTextHolder,
+              improvement: improvement,
+              sessionId: sessionId,
+              useLLM: useLLM,
+              testSuite: testSuite,
+            }))
+            speechTextHolder = '';
+        }
+    }
+  }
