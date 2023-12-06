@@ -24,7 +24,7 @@ export function MessageThreadView() {
 
   const messages = useSelector(selectMessages);
 
-  return (
+  return (<>
     <MessageThread
       className="message-thread-view"
       showMessageDate={true}
@@ -34,6 +34,7 @@ export function MessageThreadView() {
         <CustomMessageBubble message={message} />
       )}
     />
+    </>
   );
 }
 
