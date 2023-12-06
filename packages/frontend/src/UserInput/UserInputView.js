@@ -10,21 +10,28 @@ import {
 } from "../ExperimentConfig/ExperimentConfigSlice";
 import { store } from "../index";
 import "./UserInputView.css";
-import { messageAdded } from "../MessageThread/MessageThreadSlice";
-
+import { Mic24Regular } from "@fluentui/react-icons";
 export function UserInputView() {
   const dispatch = useDispatch();
   return (
     <FluentThemeProvider>
       <div className="user-input-view">
-        <SendBox
-          onSendMessage={async (message) => {
-            handleSend(message, dispatch);
-          }}
-          onTyping={async () => {
-            return;
-          }}
-        />
+        <div className="input-box">
+          <SendBox
+            onSendMessage={async (message) => {
+              handleSend(message, dispatch);
+            }}
+            onTyping={async () => {
+              return;
+            }}
+          />
+        </div>
+        <button
+          className="microphone-icon"
+          onClick={() => console.log("Mic button clicked")}
+        >
+          <Mic24Regular />
+        </button>
       </div>
     </FluentThemeProvider>
   );
@@ -36,13 +43,13 @@ const handleSend = (message, dispatch) => {
   const useLLM = selectUseLLM(store.getState());
   const testSuite = selectTestSuite(store.getState());
 
-    dispatch(
-      sendMessage({
-        userInput: message,
-        improvement: improvement,
-        sessionId: sessionId,
-        useLLM: useLLM,
-        testSuite: testSuite,
-      })
-    );
+  dispatch(
+    sendMessage({
+      userInput: message,
+      improvement: improvement,
+      sessionId: sessionId,
+      useLLM: useLLM,
+      testSuite: testSuite,
+    })
+  );
 };
