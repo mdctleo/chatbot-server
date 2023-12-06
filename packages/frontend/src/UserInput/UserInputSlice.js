@@ -5,6 +5,7 @@ import { messageAdded } from "../MessageThread/MessageThreadSlice";
 
 const initialState = {
   isResponding: false,
+  isRecording: false
 };
 
 export const sendMessage = createAsyncThunk(
@@ -64,13 +65,18 @@ export const sendMessage = createAsyncThunk(
 const userInputSlice = createSlice({
   name: "userInput",
   initialState,
-  reducers: {},
+  reducers: {
+    setIsRecording (state, action) {
+      state.isRecording = action.payload;
+    }
+  },
 });
 
 // `createSlice` automatically generated action creators with these names.
 // export them as named exports from this "slice" file
-// export const { sendMessage } = userInputSlice.actions
+export const { setIsRecording } = userInputSlice.actions
 export const selectIsResponding = (state) => state.userInput.isResponding;
+export const selectIsRecording = (state) => state.userInput.isRecording;
 
 // Export the slice reducer as the default export
 export default userInputSlice.reducer;

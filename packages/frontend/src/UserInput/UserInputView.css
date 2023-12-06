@@ -1,4 +1,17 @@
 .user-input-view {
     padding: 1rem;
     width: 100%;
-  }
+    display: flex;
+    align-items: center;
+}
+
+.user-input-view .input-box {
+  flex-grow: 1; /* Allow the input box to take up the remaining space */
+  margin-right: 1rem; /* Add some margin to the right of the input box */
+}
+
+.user-input-view .microphone-icon {
+  flex-shrink: 0; /* Prevent the microphone icon from shrinking */
+  border: none;
+  background: none;
+}

@@ -1,7 +1,8 @@
 import { SendBox, FluentThemeProvider } from "@azure/communication-react";
-import React from "react";
-import { useDispatch } from "react-redux";
-import { selectIsResponding, sendMessage } from "./UserInputSlice";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { selectIsRecording, sendMessage, setIsRecording } from "./UserInputSlice";
 import {
   selectImprovement,
   selectSessionId,
@@ -10,21 +11,45 @@ import {
 } from "../ExperimentConfig/ExperimentConfigSlice";
 import { store } from "../index";
 import "./UserInputView.css";
-import { messageAdded } from "../MessageThread/MessageThreadSlice";
+import { Mic24Regular, Stop24Regular } from "@fluentui/react-icons";
+import { startSpeechRecognition, stopSpeechRecognition } from "../SpeechHandler";
 
 export function UserInputView() {
   const dispatch = useDispatch();
+  const isRecording = useSelector(selectIsRecording)
+
+  const handleMicButton = () => {
+    // const isRecording = useSelector(selectIsRecording);
+    if (isRecording) {
+        console.log("stop recording")
+        stopSpeechRecognition();
+    } else {
+        console.log("start recording")
+        startSpeechRecognition();
+    }
+
+    dispatch(setIsRecording(!isRecording));
+}
+
   return (
     <FluentThemeProvider>
       <div className="user-input-view">
-        <SendBox
-          onSendMessage={async (message) => {
-            handleSend(message, dispatch);
-          }}
-          onTyping={async () => {
-            return;
-          }}
-        />
+        <div className="input-box">
+          <SendBox
+            onSendMessage={async (message) => {
+              handleSend(message, dispatch);
+            }}
+            onTyping={async () => {
+              return;
+            }}
+          />
+        </div>
+        <button
+          className="microphone-icon"
+          onClick={handleMicButton}
+        >
+          {isRecording? <Stop24Regular /> : <Mic24Regular />}
+        </button>
       </div>
     </FluentThemeProvider>
   );
@@ -36,13 +61,13 @@ const handleSend = (message, dispatch) => {
   const useLLM = selectUseLLM(store.getState());
   const testSuite = selectTestSuite(store.getState());
 
-    dispatch(
-      sendMessage({
-        userInput: message,
-        improvement: improvement,
-        sessionId: sessionId,
-        useLLM: useLLM,
-        testSuite: testSuite,
-      })
-    );
+  dispatch(
+    sendMessage({
+      userInput: message,
+      improvement: improvement,
+      sessionId: sessionId,
+      useLLM: useLLM,
+      testSuite: testSuite,
+    })
+  );
 };
