@@ -1,4 +1,3 @@
-import { SendBox } from "@azure/communication-react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
