@@ -5,7 +5,6 @@ import { UserInputView } from '../UserInput/UserInputView';
 
 export function ConversationView() {
     useEffect(() => {
-      console.log("Got to ConversationView")
       const setVh = () => {
         document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
       };
