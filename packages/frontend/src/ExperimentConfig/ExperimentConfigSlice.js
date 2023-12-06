@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { closeWebSocket, initializeWebSocket } from '../WebSocketHandler'
+import { freeWebrtcResource, initializeWebrtcSocket } from '../WebRTCHandler'
 
 export const ImprovementsEnum = {
   HTTP: 'HTTP',
-  WEBSOCKET: 'WebSocket'
+  WEBSOCKET: 'WebSocket',
+  WEBRTC: "WebRTC"
 }
 
 export const TestSuitesEnum = {
@@ -29,6 +32,19 @@ const experimentConfigSlice = createSlice({
     setImprovement(state, action) {
       state.improvement = action.payload
       state.sessionId = generateSessionId()
+
+      if (state.improvement === "WEBSOCKET") {
+        // freeWebrtcResource()
+
+        initializeWebSocket()
+      } else if (state.improvement === "HTTP") {
+        closeWebSocket()
+        // freeWebrtcResource()
+      } else if (state.improvement === "WEBRTC") {
+        // closeWebSocket()
+        
+        initializeWebrtcSocket()
+      }
     },
     
     setTestSuite(state, action) {
