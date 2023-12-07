@@ -1,4 +1,8 @@
 import Peer from "simple-peer";
+import { messageAdded } from "./MessageThread/MessageThreadSlice";
+import { store } from "./index";
+import { sendLog, SourcesEnum } from "logger";
+import { setIsResponding } from "./UserInput/UserInputSlice";
 
 let peer = null;
 let ws = null;
@@ -18,11 +22,15 @@ export const initializeWebrtcSocket = () => {
       });
   
       peer.on("connect", () => {
-        console.log("Peer connection established");
-        // Now you can send data to the client through the peer
-        peer.send("Hello, Server!");
-  
-      //   ws.close();
+        console.log("Peer connection established");  
+        ws.close();
+      });
+
+      peer.on("data", (data) => {
+        console.log("Received data from Server:", data.toString());
+        const formattedMessage = JSON.parse(data.toString());
+        store.dispatch(messageAdded(formattedMessage));
+        store.dispatch(setIsResponding(false));
       });
   
       peer.on('close', () => console.log('peer connection closed'));
@@ -32,24 +40,22 @@ export const initializeWebrtcSocket = () => {
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("websocket on message")
-      console.log(data)
-      peer.signal(data);
-      //   const formattedMessage = JSON.parse(event.data)
-      //   store.dispatch(messageAdded(formattedMessage))
+      peer.signal(data.data);
     };
 
     ws.onclose = () => {
       console.log("WebSocket connection closed");
     };
-
-    // peer.on("data", (data) => {
-    //   console.log("Received data from Server:");
-    // });
   }
 
   return peer;
 };
+
+export const sendWebrtcMessage = (message) => {
+  const messageLeaveClientTimestamp = new Date().getTime()
+  peer.send(JSON.stringify(message))
+  sendLog(message, messageLeaveClientTimestamp, SourcesEnum.CLIENT_SENT_TO_SERVER)
+}
 
 export const freeWebrtcResource = () => {
     if (peer) {

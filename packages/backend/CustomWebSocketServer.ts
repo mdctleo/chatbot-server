@@ -62,8 +62,26 @@ export class CustomWebSocketServer extends WebSocketServer {
             console.log("Peer connection established");
           });
 
-          this.peer.on("data", (data) => {
-            console.log("Received data:", data.toString());
+          this.peer.on("data", async (data) => {
+            console.log("Server Received data:", data.toString());
+            const { message } = JSON.parse(data.toString());
+            console.log("Message:", message);
+
+            let llmResp = "This is a test response from the WebRTC protocol";
+            if (body.useLLM === true) {
+              llmResp = await getLLMResponse(message.content);
+            }
+
+            const response = JSON.stringify(
+              generateMessageFormat(
+                llmResp,
+                body.sessionId,
+                body.exchangeId,
+                body.improvement
+              )
+            );
+
+            this.peer?.send(response)
           });
         }
 

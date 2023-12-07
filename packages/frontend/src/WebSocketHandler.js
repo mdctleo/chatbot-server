@@ -1,6 +1,7 @@
 import { messageAdded } from "./MessageThread/MessageThreadSlice";
 import { store } from "./index";
 import { sendLog, SourcesEnum } from "logger";
+import { setIsResponding } from "./UserInput/UserInputSlice";
 
 let ws = null
 
@@ -20,7 +21,9 @@ export const initializeWebSocket = () => {
     
     ws.onmessage = (event) => {
       const formattedMessage = JSON.parse(event.data)
+      console.log(formattedMessage)
       store.dispatch(messageAdded(formattedMessage))
+      store.dispatch(setIsResponding(false))
     };
     
     ws.onclose = () => {
