@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { closeWebSocket, initializeWebSocket } from '../WebSocketHandler'
-import { freeWebrtcResource, initializeWebrtcSocket } from '../WebRTCHandler'
+import { freeWebRTCResource, initializeWebRTCSocket } from '../WebRTCHandler'
 
 export const ImprovementsEnum = {
   HTTP: 'HTTP',
@@ -34,16 +34,14 @@ const experimentConfigSlice = createSlice({
       state.sessionId = generateSessionId()
 
       if (state.improvement === "WEBSOCKET") {
-        // freeWebrtcResource()
-
+        freeWebRTCResource()
         initializeWebSocket()
       } else if (state.improvement === "HTTP") {
         closeWebSocket()
-        // freeWebrtcResource()
+        freeWebRTCResource()
       } else if (state.improvement === "WEBRTC") {
-        // closeWebSocket()
-        
-        initializeWebrtcSocket()
+        closeWebSocket()
+        initializeWebRTCSocket()
       }
     },
     

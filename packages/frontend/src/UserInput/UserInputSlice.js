@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { sendWebSocketMessage } from "../WebSocketHandler";
 import { sendHTTPMessage } from "../HTTPHandler";
 import { messageAdded } from "../MessageThread/MessageThreadSlice";
-import { sendWebrtcMessage } from "../WebRTCHandler";
+import { sendWebRTCMessage } from "../WebRTCHandler";
 
 const initialState = {
   isResponding: false,
@@ -65,7 +65,7 @@ export const sendMessage = createAsyncThunk(
         dispatch(messageAdded(data.body));
         dispatch(setIsResponding(false));
       } else if (improvement === "WEBRTC") {
-        sendWebrtcMessage(messagePayload);
+        sendWebRTCMessage(messagePayload);
       }
     }
   }
