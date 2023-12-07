@@ -49,6 +49,11 @@ export const sendMessage = createAsyncThunk(
       // Add user input into the message thread
       dispatch(messageAdded({ message: messagePayload.message }));
       dispatch(setUserInput(""));
+      
+      if (window.AndroidBridge) {
+        console.log(window.AndroidBridge.getWifiInfo());
+        console.log(window.AndroidBridge.getCellularInfo());
+      }
 
       /**
        * Our metadata
