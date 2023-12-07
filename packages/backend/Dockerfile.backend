@@ -21,6 +21,8 @@ RUN npm install
 
 # Make port 80 available to the world outside this container
 EXPOSE 8000
+EXPOSE 8001
+EXPOSE 8002
 
 # Run the application when the container launches
 CMD ["npm", "start"]

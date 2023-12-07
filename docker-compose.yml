@@ -9,6 +9,8 @@ services:
       dockerfile: ./packages/backend/Dockerfile.backend
     ports:
       - '8000:8000'
+      - '8001:8001'
+      - '8002:8002'
   frontend:
     image: mdctleo/chatbot-server-frontend:latest
     env_file:
@@ -17,4 +19,4 @@ services:
       context: .
       dockerfile: ./packages/frontend/Dockerfile.frontend
     ports:
-      - '8088:80'
+      - '8088:90'
