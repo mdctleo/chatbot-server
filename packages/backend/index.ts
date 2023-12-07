@@ -8,6 +8,7 @@ import { generateMessageFormat } from './MessageFomatter';
 import { sendLog, SourcesEnum } from 'logger';
 import bodyParser from 'body-parser';
 import { getLLMResponse } from './LMService';
+import { CustomWebRTCServer } from './CustomWebRTCServer';
 
 // Initialize the express engine
 const app: express.Application = express();
@@ -63,4 +64,6 @@ const httpServer = app.listen(port, () => {
          http://localhost:${port}/`);
 });
 
-const cwss = new CustomWebSocketServer({ server: httpServer });
+const cwss = new CustomWebSocketServer({ port: 8001 });
+
+const webRTCSocketServer = new CustomWebRTCServer({ port: 8002 });

@@ -21,7 +21,6 @@ export const initializeWebSocket = () => {
     
     ws.onmessage = (event) => {
       const formattedMessage = JSON.parse(event.data)
-      console.log(formattedMessage)
       store.dispatch(messageAdded(formattedMessage))
       store.dispatch(setIsResponding(false))
     };

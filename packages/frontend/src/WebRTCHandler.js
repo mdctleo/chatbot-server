@@ -7,16 +7,15 @@ import { setIsResponding } from "./UserInput/UserInputSlice";
 let peer = null;
 let ws = null;
 
-export const initializeWebrtcSocket = () => {
-  if (!ws || ws.readyState !== WebSocket.OPEN) {
-    ws = new WebSocket("ws://localhost:8000");
+export const initializeWebRTCSocket = () => {
+  if (!ws || ws.readyState !== WebSocket.OPEN || !peer) {
+    ws = new WebSocket(process.env.REACT_APP_WEBRTCSOCKET);
 
     ws.onopen = () => {
-      console.log("WebSocket connection established");
+      console.log("WebRTCSocket connection established");
       peer = new Peer({ initiator: true });
 
       peer.on("signal", (data) => {
-        console.log("got inside signalling")
         // Send signaling data to the client through WebSocket
         ws.send(JSON.stringify(data));
       });
@@ -27,15 +26,20 @@ export const initializeWebrtcSocket = () => {
       });
 
       peer.on("data", (data) => {
-        console.log("Received data from Server:", data.toString());
         const formattedMessage = JSON.parse(data.toString());
         store.dispatch(messageAdded(formattedMessage));
         store.dispatch(setIsResponding(false));
       });
   
-      peer.on('close', () => console.log('peer connection closed'));
+      peer.on('close', () =>  {
+        peer = null; 
+        console.log('Client peer connection closed') 
+      });
   
-      peer.on('error', err => console.log('peer error:', err));
+      peer.on('error', err => {
+        peer = null; 
+        console.log('Client peer error:', err)
+      });
     };
 
     ws.onmessage = (event) => {
@@ -44,21 +48,22 @@ export const initializeWebrtcSocket = () => {
     };
 
     ws.onclose = () => {
-      console.log("WebSocket connection closed");
+      ws = null;
+      console.log("WebRTCSocket connection closed");
     };
   }
-
-  return peer;
 };
 
-export const sendWebrtcMessage = (message) => {
+export const sendWebRTCMessage = (message) => {
   const messageLeaveClientTimestamp = new Date().getTime()
   peer.send(JSON.stringify(message))
   sendLog(message, messageLeaveClientTimestamp, SourcesEnum.CLIENT_SENT_TO_SERVER)
 }
 
-export const freeWebrtcResource = () => {
+export const freeWebRTCResource = () => {
     if (peer) {
         peer.destroy();
+        peer = null;
+        ws = null;
     }
 }
