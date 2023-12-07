@@ -10,7 +10,6 @@ export enum SourcesEnum {
   }
   
   export const sendLog = (messagePayload: any, timeStamp: number, source: SourcesEnum) => {
-    console.log("Calling sendLog")
     messagePayload.timeStamp = timeStamp;
     messagePayload.source = source;
   

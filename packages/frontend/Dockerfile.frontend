@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:18.17.1-alpine as build-stage
+FROM node:18.17.1 as build-stage
 
 # # Set the working directory in the container to /chatbot-server
 WORKDIR /chatbot-server-frontend
@@ -7,7 +7,6 @@ WORKDIR /chatbot-server-frontend
 COPY packages/logger packages/logger
 COPY packages/frontend packages/frontend
 RUN npm install -g typescript
-
 
 WORKDIR /chatbot-server-frontend/packages/logger
 # Build the logger
