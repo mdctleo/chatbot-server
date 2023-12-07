@@ -1,16 +1,18 @@
 version: '3'
 services:
   backend:
+    image: mdctleo/chatbot-server-backend:latest
     build:
       context: .
       dockerfile: ./packages/backend/Dockerfile.backend
     ports:
       - '8000:8000'
   frontend:
+    image: mdctleo/chatbot-server-frontend:latest
     env_file:
       - ./packages/frontend/.env
     build:
       context: .
       dockerfile: ./packages/frontend/Dockerfile.frontend
     ports:
-      - '80:80'
+      - '8088:80'

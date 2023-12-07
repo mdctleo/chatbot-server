@@ -5,6 +5,8 @@ import { messageAdded } from "../MessageThread/MessageThreadSlice";
 
 const initialState = {
   isResponding: false,
+  isRecording: false,
+  userInput: ""
 };
 
 export const sendMessage = createAsyncThunk(
@@ -13,6 +15,7 @@ export const sendMessage = createAsyncThunk(
     { userInput, improvement, sessionId, useLLM, testSuite },
     { dispatch, getState }
   ) => {
+
     let numTimesToQuery = 1;
 
     if (testSuite === "RUN_10_QUERIES") {
@@ -22,6 +25,8 @@ export const sendMessage = createAsyncThunk(
     }
 
     for (let i = 0; i < numTimesToQuery; i++) {
+      dispatch(setIsResponding(true))
+
       const messagePayload = {
         // This message object is the format the UI library expects
         // We should add our fields outside the message object so it will easy to extract and display
@@ -42,6 +47,7 @@ export const sendMessage = createAsyncThunk(
 
       // Add user input into the message thread
       dispatch(messageAdded({ message: messagePayload.message }));
+      dispatch(setUserInput(""));
 
       /**
        * Our metadata
@@ -56,6 +62,7 @@ export const sendMessage = createAsyncThunk(
       } else if (improvement === "HTTP") {
         const data = await sendHTTPMessage(messagePayload);
         dispatch(messageAdded(data.body));
+        dispatch(setIsResponding(false));
       }
     }
   }
@@ -64,13 +71,25 @@ export const sendMessage = createAsyncThunk(
 const userInputSlice = createSlice({
   name: "userInput",
   initialState,
-  reducers: {},
+  reducers: {
+    setIsRecording (state, action) {
+      state.isRecording = action.payload;
+    },
+    setIsResponding (state, action) {
+      state.isResponding = action.payload;
+    },
+    setUserInput (state, action) {
+      state.userInput = action.payload;
+    }
+  },
 });
 
 // `createSlice` automatically generated action creators with these names.
 // export them as named exports from this "slice" file
-// export const { sendMessage } = userInputSlice.actions
+export const { setIsRecording, setIsResponding, setUserInput } = userInputSlice.actions
 export const selectIsResponding = (state) => state.userInput.isResponding;
+export const selectIsRecording = (state) => state.userInput.isRecording;
+export const selectUserInput = (state) => state.userInput.userInput;
 
 // Export the slice reducer as the default export
 export default userInputSlice.reducer;
