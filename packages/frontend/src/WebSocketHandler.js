@@ -1,22 +1,9 @@
 import { messageAdded } from "./MessageThread/MessageThreadSlice";
 import { store } from "./index";
 import { sendLog, SourcesEnum } from "logger";
+import { setIsResponding } from "./UserInput/UserInputSlice";
 
-const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET)
-
-ws.onopen = () => {
-  console.log('WebSocket connection established')
-};
-
-ws.onmessage = (event) => {
-  console.log(`Received message: ${event.data}`)
-  const formattedMessage = JSON.parse(event.data)
-  store.dispatch(messageAdded(formattedMessage))
-};
-
-ws.onclose = () => {
-  console.log('WebSocket connection closed')
-};
+let ws = null
 
 export const sendWebSocketMessage = (message) => {
   const messageLeaveClientTimestamp = new Date().getTime()
@@ -24,5 +11,32 @@ export const sendWebSocketMessage = (message) => {
   sendLog(message, messageLeaveClientTimestamp, SourcesEnum.CLIENT_SENT_TO_SERVER)
 }
 
+export const initializeWebSocket = () => {
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    ws = new WebSocket(process.env.REACT_APP_WEBSOCKET);
 
-export default ws
+    ws.onopen = () => {
+      console.log('WebSocket connection established')
+    };
+    
+    ws.onmessage = (event) => {
+      const formattedMessage = JSON.parse(event.data)
+      console.log(formattedMessage)
+      store.dispatch(messageAdded(formattedMessage))
+      store.dispatch(setIsResponding(false))
+    };
+    
+    ws.onclose = () => {
+      console.log('WebSocket connection closed')
+    };
+  }
+
+  return ws;
+}
+
+export const closeWebSocket = () => {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.close()
+  }
+}
+

@@ -10,6 +10,7 @@ import userInputSlice from './UserInput/UserInputSlice'
 import experimentConfigSlice from './ExperimentConfig/ExperimentConfigSlice'
 import { initializeIcons, registerIcons } from '@fluentui/react'
 import { DEFAULT_COMPONENT_ICONS } from '@azure/communication-react'
+import * as process from 'process';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,10 @@ export const store = configureStore({
     experimentConfig: experimentConfigSlice
   }
 })
+
+window.global = window;
+window.process = process;
+window.Buffer = []
 
 initializeIcons();
 registerIcons({ icons: DEFAULT_COMPONENT_ICONS });
