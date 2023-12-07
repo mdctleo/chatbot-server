@@ -40,12 +40,11 @@ export class CustomWebSocketServer extends WebSocketServer {
     customWebSocket.on("message", async (req) => {
       let timeStamp = new Date().getTime();
 
-    //   console.log("Received message:", req.toString());
-
-      const body = JSON.parse(req.toString());
-      console.log(body)
-
-      if (body.type) {
+      const formattedMessage = JSON.parse(req.toString());
+      
+      // If the type field is present, it means the websocket is being used for establishing a WebRTC connection
+      // Else it is being used for a regular WebSocket connection
+      if (formattedMessage.type) {
         if (!this.peer) {
           this.peer = new Peer({ initiator: false, wrtc: wrtc });
 
@@ -54,7 +53,6 @@ export class CustomWebSocketServer extends WebSocketServer {
           this.peer.on('error', err => console.log('peer error:', err));
 
           this.peer.on("signal", (data) => {
-            console.log("Server got to on signal")
             customWebSocket.send(JSON.stringify({ type: "signal", data }));
           });
 
@@ -63,21 +61,19 @@ export class CustomWebSocketServer extends WebSocketServer {
           });
 
           this.peer.on("data", async (data) => {
-            console.log("Server Received data:", data.toString());
-            const { message } = JSON.parse(data.toString());
-            console.log("Message:", message);
+            const formattedMessage = JSON.parse(data.toString());
 
             let llmResp = "This is a test response from the WebRTC protocol";
-            if (body.useLLM === true) {
-              llmResp = await getLLMResponse(message.content);
+            if (formattedMessage.useLLM === true) {
+              llmResp = await getLLMResponse(formattedMessage.content);
             }
 
             const response = JSON.stringify(
               generateMessageFormat(
                 llmResp,
-                body.sessionId,
-                body.exchangeId,
-                body.improvement
+                formattedMessage.sessionId,
+                formattedMessage.exchangeId,
+                formattedMessage.improvement
               )
             );
 
@@ -85,32 +81,32 @@ export class CustomWebSocketServer extends WebSocketServer {
           });
         }
 
-        this.peer.signal(body);
+        this.peer.signal(formattedMessage);
       } else {
-        // sendLog(body, timeStamp, SourcesEnum.CLIENT_SENT_TO_SERVER);
+        sendLog(formattedMessage, timeStamp, SourcesEnum.CLIENT_SENT_TO_SERVER);
 
         timeStamp = new Date().getTime();
-        // sendLog(body, timeStamp, SourcesEnum.SERVER_SENT_TO_LLM);
+        sendLog(formattedMessage, timeStamp, SourcesEnum.SERVER_SENT_TO_LLM);
 
         let llmResp = "This is a test response from the WebSocket protocol";
-        if (body.useLLM === true) {
-          llmResp = await getLLMResponse(body.message.content);
+        if (formattedMessage.useLLM === true) {
+          llmResp = await getLLMResponse(formattedMessage.message.content);
         }
 
         timeStamp = new Date().getTime();
-        // sendLog(body, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_LLM);
+        sendLog(formattedMessage, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_LLM);
 
         const response = JSON.stringify(
           generateMessageFormat(
             llmResp,
-            body.sessionId,
-            body.exchangeId,
-            body.improvement
+            formattedMessage.sessionId,
+            formattedMessage.exchangeId,
+            formattedMessage.improvement
           )
         );
 
         timeStamp = new Date().getTime();
-        // sendLog(body, timeStamp, SourcesEnum.SERVER_SENT_TO_CLIENT);
+        sendLog(formattedMessage, timeStamp, SourcesEnum.SERVER_SENT_TO_CLIENT);
         customWebSocket.send(response);
       }
     });
