@@ -27,8 +27,12 @@ export const initializeWebrtcSocket = () => {
       });
 
       peer.on("data", (data) => {
-        console.log("Received data from Server:", data.toString());
+        const timeStamp = new Date().getTime();
+
         const formattedMessage = JSON.parse(data.toString());
+        
+        sendLog(formattedMessage, timeStamp, SourcesEnum.CLIENT_RECEIVED_FROM_SERVER)
+
         store.dispatch(messageAdded(formattedMessage));
         store.dispatch(setIsResponding(false));
       });

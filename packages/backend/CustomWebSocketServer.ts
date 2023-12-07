@@ -61,12 +61,22 @@ export class CustomWebSocketServer extends WebSocketServer {
           });
 
           this.peer.on("data", async (data) => {
+            timeStamp = new Date().getTime();
+
             const formattedMessage = JSON.parse(data.toString());
+
+            sendLog(formattedMessage, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_CLIENT);
+
+            timeStamp = new Date().getTime();
+            sendLog(formattedMessage, timeStamp, SourcesEnum.SERVER_SENT_TO_LLM);
 
             let llmResp = "This is a test response from the WebRTC protocol";
             if (formattedMessage.useLLM === true) {
               llmResp = await getLLMResponse(formattedMessage.content);
             }
+
+            timeStamp = new Date().getTime();
+            sendLog(formattedMessage, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_LLM);
 
             const response = JSON.stringify(
               generateMessageFormat(
@@ -77,13 +87,16 @@ export class CustomWebSocketServer extends WebSocketServer {
               )
             );
 
+            timeStamp = new Date().getTime();
+            sendLog(formattedMessage, timeStamp, SourcesEnum.SERVER_SENT_TO_CLIENT)
+
             this.peer?.send(response)
           });
         }
 
         this.peer.signal(formattedMessage);
       } else {
-        sendLog(formattedMessage, timeStamp, SourcesEnum.CLIENT_SENT_TO_SERVER);
+        sendLog(formattedMessage, timeStamp, SourcesEnum.SERVER_RECEIVED_FROM_CLIENT);
 
         timeStamp = new Date().getTime();
         sendLog(formattedMessage, timeStamp, SourcesEnum.SERVER_SENT_TO_LLM);
