@@ -26,7 +26,12 @@ export const initializeWebRTCSocket = () => {
       });
 
       peer.on("data", (data) => {
+        const timeStamp = new Date().getTime();
+
         const formattedMessage = JSON.parse(data.toString());
+        
+        sendLog(formattedMessage, timeStamp, SourcesEnum.CLIENT_RECEIVED_FROM_SERVER)
+
         store.dispatch(messageAdded(formattedMessage));
         store.dispatch(setIsResponding(false));
       });
