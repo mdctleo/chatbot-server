@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = "https://cs536.escglobal.co/v1/message/all/websocket"
+url = "https://cs536.escglobal.co/v1/message/all/http"
 
 headers = {}
 payload = {}
@@ -9,7 +9,7 @@ payload = {}
 protocol = "WEBSOCKET"
 # protocol = "HTTP"
 
-# print(requests.request("GET", url, headers=headers, data=payload).json())
+print(requests.request("GET", url, headers=headers, data=payload).json())
 
 diff_arr = []
 
@@ -84,7 +84,7 @@ def calculate_average_RTT():
 
     return avg_RTT / len(data[protocol])
 
-print("Average RTT:", calculate_average_RTT())
-print(diff_arr)
-print("Maximum RTT", max(diff_arr))
-print("Minimum RTT", min(diff_arr))
+# print("Average RTT:", calculate_average_RTT())
+# print(diff_arr)
+# print("Maximum RTT", max(diff_arr))
+# print("Minimum RTT", min(diff_arr))
