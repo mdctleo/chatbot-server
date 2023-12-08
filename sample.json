@@ -1,0 +1,22 @@
+{
+    "HTTP": [
+        {
+            "session_id": "-2010231231323",
+            "messages": [
+                {
+                    "message_id": "-213213232332",
+                    "stamps": [
+                        {
+                            "source": "CLIENT_SENT_TO_SERVER",
+                            "timestamp": "1701977073584"
+                        },
+                        {
+                            "source": "SERVER_RECEIVED_FROM_CLIENT",
+                            "timestamp": "1701977073594"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
