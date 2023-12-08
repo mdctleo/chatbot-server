@@ -19,4 +19,4 @@ services:
       context: .
       dockerfile: ./packages/frontend/Dockerfile.frontend
     ports:
-      - '8088:80'
+      - '8088:90'

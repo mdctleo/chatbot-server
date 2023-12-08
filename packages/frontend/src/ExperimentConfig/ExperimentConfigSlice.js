@@ -5,7 +5,7 @@ import { freeWebRTCResource, initializeWebRTCSocket } from '../WebRTCHandler'
 export const ImprovementsEnum = {
   HTTP: 'HTTP',
   WEBSOCKET: 'WebSocket',
-  WEBRTC: "WebRTC"
+  // WEBRTC: "WebRTC"
 }
 
 export const TestSuitesEnum = {
