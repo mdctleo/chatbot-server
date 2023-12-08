@@ -13,6 +13,8 @@ You will need a `.env` file inside `packages/frontend/` with the following varia
 ```
 REACT_APP_API_URL=
 REACT_APP_WEBSOCKET=
+REACT_APP_WEBRTCSOCKET=
+REACT_APP_SPEECH_SERVICE_KEY=
 ```
 
 You will also need a `.env` file inside `packages/backend/` with the following variables set:
